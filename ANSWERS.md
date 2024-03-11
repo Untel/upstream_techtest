@@ -37,8 +37,9 @@ This way, the database will be in charge of ensuring there are no duplicate emai
 
   <summary>Aditional answers</summary>
 
-- Nb. In a scenario where there is revelant additional data to persist even on the second fetch (ex. User C receive the email as a blind carbon copy, so we don't know about C when inserting from B), we can use an `upsert` strategy (check existing value before inserting), or catch the unique constraint violation error
-- Nb2. If we care about datarace, we can use a semaphore (or equivalent in distributed system)
+- Nb1. In scenarios where relevant additional data needs to be persisted even after a second fetch (e.g., ~~User C receives the email as a blind carbon copy, so we're unaware of C when inserting from B~~ *Edit: According to the RFC, BCC results in a new copy of the message, likely with a new Message-ID. However, I lack a better example*), we could adopt an upsert strategy (checking for existing values before inserting) or catch the unique constraint violation error.
+- Nb2. Databases already possess many locking mechanisms to prevent data races, but if necessary, we can manage this within our Node.js process for tasks that should not be executed multiple times (e.g., downloading email attachments). This can be achieved using a semaphore or a redis (on distributed systems).
+
 </details>
 
 ### Task 5: Testing
