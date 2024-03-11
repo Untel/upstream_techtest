@@ -3,6 +3,7 @@
 - My responses will be in English to align with the assignment's language. Please excuse any potential misunderstandings due to language differences.
 - Our Prettier/ESLint configurations may differ, leading to potentially extensive git diffs. I apologize for any inconvenience this may cause.
 - Occasionally, I might include additional thoughts or reflections in a collapsible tag. Please note that these are not part of my main response but rather insights or considerations I'm exploring.
+- I have deliberately provided pedantic responses for interview purposes. However, it's worth noting that performance is not a concern when the import method is executed within a cron job and in a serverful context.
 
 ### Task 1: Group messages by threads
 
@@ -10,14 +11,15 @@ As the assignment aims to reward simplicity and readability, I have voluntarily 
 
 ### Task 2: Take messages stored in database into account
 
-We would use the `MessageRepository` and the method `findOneByEmailUniversalMessageIdentifier` to fetch the missing messages. Once we have the missing parent message, we can assign the same threadId to its children. While `findOneByEmailUniversalMessageIdentifier` returns only the `threadId` and not a `ThreadEntity`, we will need to modify the `createMessageFromEmail` method to accept a `threadId` instead of a `ThreadEntity`.
+To retrieve missing messages, we'll utilize the `MessageRepository` along with the `findOneByEmailUniversalMessageIdentifier` method. This will be done for each missing `Message-Id` to fetch the corresponding records from the database. Subsequently, we can allocate the retrieved `threadId` to its child messages. Since `findOneByEmailUniversalMessageIdentifier` only yields a `threadId` rather than a full `ThreadEntity`, we'll need to adjust the `createMessageFromEmail` method to accept a `threadId` directly instead of a `ThreadEntity`.
 
 <details>
 
   <summary>Additional answers</summary>
 
-- Note 1: Creating a `findManyByEmailUniversalMessageIdentifiers` method could be more efficient for fetching missing messages in a single SQL call.
-- Note 2: A potential solution could involve setting the top-level `Message-ID` as the thread's primary key. This would automatically include them in the next `INNER JOIN`, eliminating the need to check the database upfront or worry about fetching the child before its parent. However, using a remote ID as our primary key might not be best practice. This solution requires knowing the top-level `Message-ID`, and the RFC mentions the use of the `References` field instead of `In-Reply-To`.
+- Note 1: In real-world scenarios, my preference is to consistently rely on the database as the singular source of truth to ensure data integrity and proper object formatting. This approach is favored over merging in-memory and database objects, as it helps maintain the accuracy and reliability of the data.
+- Note 2: Creating a `findManyByEmailUniversalMessageIdentifiers` method could be more efficient for fetching missing messages in a single SQL call.
+- Note 3: A potential solution could involve setting the top-level `Message-ID` as the thread's primary key. This would automatically include them in the next `INNER JOIN`, eliminating the need to check the database upfront or worry about fetching the child before its parent. However, using a remote ID as our primary key might not be best practice. This solution requires knowing the top-level `Message-ID`, and the RFC mentions the use of the `References` field instead of `In-Reply-To`.
 
 </details>
 
@@ -30,6 +32,8 @@ public get domainName() {
    return this.value.split("@")[1]; // Or a more complex regex if needed later
 }
 ```
+
+This approach ensures that all objects referencing an email address (such as UserEntity.email, EmailEntity.from, etc.) can access this logic. Within the MessageDisplayService, displaying the sender.email.domainName property becomes straightforward.
 
 ### Task 4: Preventing Duplicate Imports in Parallel Email Processing
 

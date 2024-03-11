@@ -21,7 +21,7 @@ export class EmailImportService {
     const fetchedEmails = await this.retrieveAndPersistEmails();
     // Sort emails first, so parents should be treated before childrens
     const sortedEmails = fetchedEmails.sort(sortByAscDate);
-    // Create a thread map to find them quickly without a find operation
+    // Create a thread map to keep track of threads created from top-level emails
     const threadMap: Record<string, ThreadEntity> = {};
     // Create a list of messages to persist, instead of persisting them one by one in the loop
     const messages: MessageEntity[] = [];
@@ -31,6 +31,7 @@ export class EmailImportService {
         // If there is no inReplyTo, it's a top-level email, create a new thread from it
         const thread = ThreadEntity.createFromTopLevelEmail(email);
         await this.threadRepository.persist([thread]);
+        // ThreadRepository.persist() will assign the DB inserted id to the thread ref, so we can access the id without refetching
         threadMap[email.universalMessageId.toString()] = thread;
         messages.push(await this.createMessageFromEmail(email, thread));
       } else {
