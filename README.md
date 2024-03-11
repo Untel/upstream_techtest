@@ -1,3 +1,6 @@
+**Adrien's note**
+Answers are present in the [ANSWERS.MD](answers.md) file
+
 # Upstream Sync
 
 Welcome to Upstream Sync! This is a fictitious backend project that serves as a platform for peer-programming or assignment evaluation. Please read the following instructions carefully to get started and complete the assignment section at the end of this document.
