@@ -23,6 +23,23 @@ public get domainName() {
 ```
 
 ### Task 4: Preventing Duplicate Imports in Parallel Email Processing
+In this scenario, we would simply add a unique constraint to the universal_message_id field in the database schema.
+```diff
+// schema.sql line 8
+- "universal_message_id"  TEXT NOT NULL,
++ "universal_message_id"  TEXT NOT NULL UNIQUE,
+```
+We will also need to append `ON CONFLICT (universal_message_id) DO NOTHING;` to the `INSERT` sql command in the `persist` method of `EmailRepository` to prevent the entire batch insertion from failing.
+
+This way, the database will be in charge of ensuring there are no duplicate emails
+
+<details>
+
+  <summary>Aditional answers</summary>
+
+- Nb. In a scenario where there is revelant additional data to persist even on the second fetch (ex. User C receive the email as a blind carbon copy, so we don't know about C when inserting from B), we can use an `upsert` strategy (check existing value before inserting), or catch the unique constraint violation error
+- Nb2. If we care about datarace, we can use a semaphore (or equivalent in distributed system)
+</details>
 
 ### Task 5: Testing
 
