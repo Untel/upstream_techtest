@@ -1,5 +1,9 @@
 # Upstream Sync
 
+- My responses will be in English to align with the assignment's language. Please excuse any potential misunderstandings due to language differences.
+- Our Prettier/ESLint configurations may differ, leading to potentially extensive git diffs. I apologize for any inconvenience this may cause.
+- Occasionally, I might include additional thoughts or reflections in a collapsible tag. Please note that these are not part of my main response but rather insights or considerations I'm exploring.
+
 ### Task 1: Group messages by threads
 
 As the assignment aims to reward simplicity and readability, I have voluntarily reduced the complexity. A more performant approach would involve using Array.reduce to group all messages by their top-level Message-Id, then bulk-create all the threads, and finally link the newly inserted IDs to messages before inserting them. This method would reduce the number of calls to the database and the need for awaiting promises in a waterfall sequence.
