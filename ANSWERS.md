@@ -33,11 +33,11 @@ public get domainName() {
 }
 ```
 
-This approach ensures that all objects referencing an email address (such as UserEntity.email, EmailEntity.from, etc.) can access this logic. Within the MessageDisplayService, displaying the sender.email.domainName property becomes straightforward.
+This approach ensures that all objects referencing an email address (such as `UserEntity.email`, `EmailEntity.from`, etc.) can access this logic. Within the `MessageDisplayService`, displaying the `sender.email.domainName` property becomes straightforward.
 
 ### Task 4: Preventing Duplicate Imports in Parallel Email Processing
 
-In this scenario, we would simply add a unique constraint to the universal_message_id field in the database schema.
+In this scenario, we would simply add a unique constraint to the `universal_message_id` field in the database schema.
 
 ```diff
 // schema.sql line 8
