@@ -36,7 +36,14 @@ export class MessageDisplayService {
           10
         );
 
-        console.log(`   ${formattedDate} ${actualSender}: ${truncatedBody}`);
+        const senderDomainName =
+          sender?.email?.domainName ||
+          email?.from.email.domainName ||
+          "unknown.domain";
+        const formattedDomainName = `@${textEllipsis(senderDomainName, 18)}`;
+        console.log(
+          `   ${formattedDate} ${actualSender} ${formattedDomainName}: ${truncatedBody}`
+        );
       }
     }
   }

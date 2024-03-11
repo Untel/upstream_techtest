@@ -15,7 +15,12 @@ We would use the `MessageRepository` and the method `findOneByEmailUniversalMess
 </details>
 
 ### Task 3: Display the domain name of the sender
-
+We have an EmailAddress class representing an email address. The best approach would be to leverage the object-oriented programming paradigm used in the codebase to create a getter for extracting the domain name.
+```ts
+public get domainName() {
+   return this.value.split("@")[1]; // Or a more complex regex if needed later
+}
+```
 
 ### Task 4: Preventing Duplicate Imports in Parallel Email Processing
 

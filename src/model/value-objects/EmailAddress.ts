@@ -16,4 +16,8 @@ export class EmailAddress {
   public toString(): string {
     return this.value;
   }
+
+  public get domainName() {
+    return this.value.split("@")[1];
+  }
 }
