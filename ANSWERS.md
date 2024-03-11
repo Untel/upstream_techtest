@@ -52,4 +52,10 @@ This way, the database will be in charge of ensuring there are no duplicate emai
 
 ### Task 5: Testing
 
+Let's set aside end-to-end testing since it depends on screen recording, and our project lacks a frontend. Achieving optimal test coverage would involve a combination of unit and integration testing.
+
+Given that our codebase primarily consists of classes—such as Entities, Value Objects, Repositories, and Services—which have internal state values and potential dependencies, unit testing may not always be straightforward. Typically, unit testing is more suited to pure functions, which, given the same input, always return the same output and operate without dependencies. Therefore, our focus will be on testing individual methods rather than entire classes. I am a strong advocate for Test-Driven Development (TDD), where unit tests are written before the core functionality, even though I don't always practice it as much as I should.
+
+For testing classes, integration tests are more applicable as they allow us to examine the functionality of the entire class. Since our project lacks a dependency injection mechanism, additional effort will be required to either swap out dependencies or mock them for testing purposes.
+
 ## Feedback
